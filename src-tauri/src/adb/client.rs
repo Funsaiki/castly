@@ -25,14 +25,15 @@ impl AdbClient {
 
     /// Try to find ADB in common locations
     fn find_adb() -> Option<String> {
-        // 1. Check bundled platform-tools next to the executable
+        // 1. Check bundled resources next to the executable (Tauri release)
         if let Ok(exe_dir) = std::env::current_exe() {
-            let bundled = exe_dir
-                .parent()
-                .map(|p| p.join("platform-tools").join("adb.exe"));
-            if let Some(path) = bundled {
-                if path.exists() {
-                    return Some(path.to_string_lossy().to_string());
+            if let Some(dir) = exe_dir.parent() {
+                // Tauri bundles resources in resources/ subfolder
+                for sub in &["resources/platform-tools", "platform-tools"] {
+                    let path = dir.join(sub).join("adb.exe");
+                    if path.exists() {
+                        return Some(path.to_string_lossy().to_string());
+                    }
                 }
             }
         }
