@@ -40,13 +40,23 @@ pub fn run() {
             commands::control::set_screen_power,
         ])
         .setup(|app| {
+            // Log to file in AppData so logs are always accessible
+            let log_dir = directories::BaseDirs::new()
+                .map(|d| d.data_local_dir().join("Castly"))
+                .unwrap_or_else(|| std::path::PathBuf::from("."));
+            let _ = std::fs::create_dir_all(&log_dir);
+            let log_file = std::fs::File::create(log_dir.join("castly.log"))
+                .unwrap_or_else(|_| std::fs::File::create("castly.log").unwrap());
+
             tracing_subscriber::fmt()
                 .with_env_filter(
                     tracing_subscriber::EnvFilter::try_from_default_env()
-                        .unwrap_or_else(|_| "phone_mirror=debug".into()),
+                        .unwrap_or_else(|_| "castly=debug".into()),
                 )
+                .with_writer(std::sync::Mutex::new(log_file))
+                .with_ansi(false)
                 .init();
-            tracing::info!("Phone Mirror starting up");
+            tracing::info!("Castly starting up — log file: {}", log_dir.join("castly.log").display());
 
             // Start AirPlay mDNS advertiser
             let mut advertiser = airplay::mdns::AirPlayAdvertiser::new();
