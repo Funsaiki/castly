@@ -102,6 +102,14 @@ const translations: Record<Locale, Record<string, string>> = {
     "help.airplay_note": "Le mirroring AirPlay est en affichage uniquement — le controle tactile n'est pas disponible.",
     "help.airplay_screenshot": "Capture : recopie de l'ecran",
 
+    // Errors
+    "error.mirror_failed": "Impossible de demarrer le miroir",
+    "error.mirror_stop_failed": "Impossible d'arreter le miroir",
+    "error.pairing_failed": "Echec de l'association Wi-Fi",
+    "error.scan_failed": "Echec de la recherche d'appareils",
+    "success.pairing": "Appareil associe avec succes",
+    "success.screenshot": "Capture d'ecran enregistree",
+
     "lang.label": "Langue",
   },
   en: {
@@ -196,6 +204,14 @@ const translations: Record<Locale, Record<string, string>> = {
     "help.airplay_step4": "Select Castly from the list",
     "help.airplay_note": "AirPlay mirroring is display-only — touch control is not available.",
     "help.airplay_screenshot": "Screenshot: screen mirroring",
+
+    // Errors
+    "error.mirror_failed": "Failed to start mirroring",
+    "error.mirror_stop_failed": "Failed to stop mirroring",
+    "error.pairing_failed": "Wi-Fi pairing failed",
+    "error.scan_failed": "Device scan failed",
+    "success.pairing": "Device paired successfully",
+    "success.screenshot": "Screenshot saved",
 
     "lang.label": "Language",
   },

@@ -3,6 +3,8 @@ import type { MirrorSession } from "../lib/types";
 import type { MsePlayer } from "../lib/mse-player";
 import { startMirror, stopMirror } from "../lib/tauri-commands";
 import { useSettingsStore } from "./settingsStore";
+import { showError, showSuccess } from "./toastStore";
+import { useI18n } from "../lib/i18n";
 
 interface SessionStore {
   sessions: Record<string, MirrorSession>;
@@ -35,7 +37,8 @@ export const useSessionStore = create<SessionStore>((set, get) => ({
         isConnecting: false,
       }));
     } catch (e) {
-      console.error("Failed to start mirroring:", e);
+      const msg = e instanceof Error ? e.message : String(e);
+      showError(`${useI18n.getState().t("error.mirror_failed")}: ${msg}`);
       set({ isConnecting: false, activeDeviceId: null });
       throw e;
     }
@@ -61,7 +64,7 @@ export const useSessionStore = create<SessionStore>((set, get) => ({
         };
       });
     } catch (e) {
-      console.error("Failed to stop mirroring:", e);
+      showError(useI18n.getState().t("error.mirror_stop_failed"));
     }
   },
 
@@ -97,6 +100,7 @@ export const useSessionStore = create<SessionStore>((set, get) => ({
     const player = get().playerRef;
     if (!player) return;
     await player.takeScreenshot();
+    showSuccess(useI18n.getState().t("success.screenshot"));
   },
 
   getActiveSession: () => {

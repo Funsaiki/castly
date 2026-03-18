@@ -4,6 +4,7 @@ import { Titlebar } from "./components/layout/Titlebar";
 import { Sidebar } from "./components/layout/Sidebar";
 import { StatusBar } from "./components/layout/StatusBar";
 import { MirrorViewport } from "./components/viewport/MirrorViewport";
+import { Toasts } from "./components/layout/Toasts";
 import { useDeviceStore } from "./stores/deviceStore";
 import type { DeviceInfo } from "./lib/types";
 import "./styles/animations.css";
@@ -43,6 +44,7 @@ function App() {
         <MirrorViewport />
       </div>
       <StatusBar />
+      <Toasts />
     </div>
   );
 }

@@ -5,6 +5,7 @@ import { useSessionStore } from "../../stores/sessionStore";
 import { useSettingsStore, type QualityPreset } from "../../stores/settingsStore";
 import { useI18n } from "../../lib/i18n";
 import { pairWifi } from "../../lib/tauri-commands";
+import { showError, showSuccess } from "../../stores/toastStore";
 
 export function Sidebar() {
   const { devices, selectedDeviceId, scanNow, selectDevice } = useDeviceStore();
@@ -26,8 +27,8 @@ export function Sidebar() {
       } else {
         await startMirroring(deviceId);
       }
-    } catch (e) {
-      console.error("Mirror error:", e);
+    } catch {
+      // Error already shown via toast in sessionStore
     }
   };
 
@@ -47,9 +48,11 @@ export function Sidebar() {
       setPairCode("");
       setConnectPort("");
       await scanNow();
+      showSuccess(t("success.pairing"));
       setTimeout(() => setWifiStatus("idle"), 2000);
     } catch (e) {
-      console.error("Wi-Fi pairing error:", e);
+      const msg = e instanceof Error ? e.message : String(e);
+      showError(`${t("error.pairing_failed")}: ${msg}`);
       setWifiStatus("error");
       setTimeout(() => setWifiStatus("idle"), 3000);
     }
