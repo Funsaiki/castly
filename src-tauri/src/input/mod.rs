@@ -1,4 +1,1 @@
-pub mod gesture;
-pub mod keyboard;
-pub mod mapper;
-pub mod touch;
+// Input module — control logic is implemented directly in commands/control.rs

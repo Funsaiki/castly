@@ -34,7 +34,7 @@ export function Titlebar() {
           <MonitorSmartphone size={12} className="text-white" />
         </div>
         <span className="text-[13px] font-semibold tracking-tight text-text-secondary">
-          Phone Mirror
+          Castly
         </span>
       </div>
 

@@ -19,8 +19,6 @@ pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_shell::init())
         .plugin(tauri_plugin_dialog::init())
-        .plugin(tauri_plugin_fs::init())
-        .plugin(tauri_plugin_notification::init())
         .plugin(tauri_plugin_os::init())
         .manage(app_state)
         .invoke_handler(tauri::generate_handler![
@@ -40,9 +38,6 @@ pub fn run() {
             commands::control::press_home,
             commands::control::press_recent,
             commands::control::set_screen_power,
-            commands::recording::start_recording,
-            commands::recording::stop_recording,
-            commands::recording::take_screenshot,
         ])
         .setup(|app| {
             tracing_subscriber::fmt()

@@ -33,7 +33,6 @@ export class MsePlayer {
   }
 
   async start(): Promise<void> {
-    console.log("[WC] Starting WebCodecs player");
 
     // Create canvas to replace the video element
     this.canvas = document.createElement("canvas");
@@ -48,7 +47,6 @@ export class MsePlayer {
       error: (e) => console.error("[WC] Decoder error:", e),
     });
 
-    console.log("[WC] Decoder created, fetching stream...");
 
     this.abortController = new AbortController();
     this.fetchStream(this.abortController.signal);
@@ -70,7 +68,6 @@ export class MsePlayer {
     ) {
       this.canvas.width = frame.displayWidth;
       this.canvas.height = frame.displayHeight;
-      console.log("[WC] Canvas resized:", frame.displayWidth, "x", frame.displayHeight);
     }
 
     this.ctx.drawImage(frame, 0, 0);
@@ -78,7 +75,6 @@ export class MsePlayer {
 
     this.frameCount++;
     if (this.frameCount <= 3 || this.frameCount % 300 === 0) {
-      console.log("[WC] Rendered frame", this.frameCount);
     }
   }
 
@@ -90,7 +86,6 @@ export class MsePlayer {
 
     const codec = `avc1.${sps[1].toString(16).padStart(2, "0")}${sps[2].toString(16).padStart(2, "0")}${sps[3].toString(16).padStart(2, "0")}`;
 
-    console.log("[WC] Configuring decoder: codec=", codec);
 
     this.decoder.configure({
       codec,
@@ -100,7 +95,6 @@ export class MsePlayer {
     });
 
     this.configured = true;
-    console.log("[WC] Decoder configured");
   }
 
 
@@ -133,7 +127,6 @@ export class MsePlayer {
         console.error("[WC] Fetch failed:", response.status);
         return;
       }
-      console.log("[WC] Stream connected");
 
       const reader = response.body.getReader();
       let buffer = new Uint8Array(0);
@@ -388,7 +381,6 @@ export class MsePlayer {
       this.audioAbortController = new AbortController();
       this.fetchAudioStream(this.audioAbortController.signal, audioUrl);
     } catch (e) {
-      console.warn("[Audio] Failed to start audio:", e);
     }
   }
 
@@ -501,7 +493,6 @@ export class MsePlayer {
   }
 
   stop(): void {
-    console.log("[WC] Stopping");
 
     this.abortController?.abort();
     this.abortController = null;

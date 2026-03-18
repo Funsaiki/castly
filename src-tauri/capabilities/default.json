@@ -1,6 +1,6 @@
 {
   "identifier": "default",
-  "description": "Default capabilities for Phone Mirror",
+  "description": "Default capabilities for Castly",
   "windows": ["main"],
   "permissions": [
     "core:default",
@@ -12,8 +12,6 @@
     "shell:allow-execute",
     "shell:allow-open",
     "dialog:default",
-    "fs:default",
-    "notification:default",
     "os:default"
   ]
 }

@@ -11,7 +11,7 @@ interface I18nStore {
 const translations: Record<Locale, Record<string, string>> = {
   fr: {
     // Titlebar
-    "app.name": "Phone Mirror",
+    "app.name": "Castly",
 
     // Sidebar
     "sidebar.devices": "Appareils",
@@ -91,14 +91,14 @@ const translations: Record<Locale, Record<string, string>> = {
     "help.wifi_step2": "Activez Debogage sans fil",
     "help.wifi_step3": "Appuyez sur Associer l'appareil avec un code d'association",
     "help.wifi_step4": "Notez l'adresse IP, le port d'association, le code, et le port de connexion",
-    "help.wifi_step5": "Entrez ces informations dans la section Wi-Fi de Phone Mirror",
+    "help.wifi_step5": "Entrez ces informations dans la section Wi-Fi de Castly",
     "help.wifi_step6": "Cliquez Associer — votre appareil apparait dans la liste",
     "help.wifi_screenshot": "Capture : debogage sans fil",
     "help.airplay_intro": "Partagez l'ecran de votre iPhone ou iPad via AirPlay. Aucune installation requise sur l'appareil Apple.",
     "help.airplay_step1": "Assurez-vous que le PC et l'iPhone sont sur le meme reseau Wi-Fi",
     "help.airplay_step2": "Sur l'iPhone, ouvrez le Centre de controle (glissez depuis le coin superieur droit)",
     "help.airplay_step3": "Appuyez sur Recopie de l'ecran",
-    "help.airplay_step4": "Selectionnez Phone Mirror dans la liste",
+    "help.airplay_step4": "Selectionnez Castly dans la liste",
     "help.airplay_note": "Le mirroring AirPlay est en affichage uniquement — le controle tactile n'est pas disponible.",
     "help.airplay_screenshot": "Capture : recopie de l'ecran",
 
@@ -106,7 +106,7 @@ const translations: Record<Locale, Record<string, string>> = {
   },
   en: {
     // Titlebar
-    "app.name": "Phone Mirror",
+    "app.name": "Castly",
 
     // Sidebar
     "sidebar.devices": "Devices",
@@ -186,14 +186,14 @@ const translations: Record<Locale, Record<string, string>> = {
     "help.wifi_step2": "Enable Wireless debugging",
     "help.wifi_step3": "Tap Pair device with pairing code",
     "help.wifi_step4": "Note the IP address, pairing port, code, and connection port",
-    "help.wifi_step5": "Enter this information in the Wi-Fi section of Phone Mirror",
+    "help.wifi_step5": "Enter this information in the Wi-Fi section of Castly",
     "help.wifi_step6": "Click Pair — your device appears in the list",
     "help.wifi_screenshot": "Screenshot: wireless debugging",
     "help.airplay_intro": "Share your iPhone or iPad screen via AirPlay. No installation needed on the Apple device.",
     "help.airplay_step1": "Make sure the PC and iPhone are on the same Wi-Fi network",
     "help.airplay_step2": "On the iPhone, open Control Center (swipe down from top-right corner)",
     "help.airplay_step3": "Tap Screen Mirroring",
-    "help.airplay_step4": "Select Phone Mirror from the list",
+    "help.airplay_step4": "Select Castly from the list",
     "help.airplay_note": "AirPlay mirroring is display-only — touch control is not available.",
     "help.airplay_screenshot": "Screenshot: screen mirroring",
 
