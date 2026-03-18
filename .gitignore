@@ -1,0 +1,27 @@
+# Dependencies
+node_modules/
+
+# Build
+dist/
+src-tauri/target/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Env
+.env
+.env.local
+
+# Downloaded tools (not part of source)
+platform-tools/
+
+# Test screenshots
+testscreen/
+
+# Claude settings
+.claude/
