@@ -4,6 +4,20 @@ use std::path::PathBuf;
 use std::process::Command;
 use tracing::{debug, error, info};
 
+#[cfg(windows)]
+use std::os::windows::process::CommandExt;
+
+#[cfg(windows)]
+const CREATE_NO_WINDOW: u32 = 0x08000000;
+
+/// Create a Command that doesn't spawn a visible console window on Windows
+fn silent_command(program: &str) -> Command {
+    let mut cmd = Command::new(program);
+    #[cfg(windows)]
+    cmd.creation_flags(CREATE_NO_WINDOW);
+    cmd
+}
+
 pub struct AdbClient {
     adb_path: String,
 }
@@ -65,7 +79,7 @@ impl AdbClient {
         }
 
         // 4. Check if adb is on PATH
-        if Command::new("adb").arg("version").output().is_ok() {
+        if silent_command("adb").arg("version").output().is_ok() {
             return Some("adb".to_string());
         }
 
@@ -74,7 +88,7 @@ impl AdbClient {
 
     /// List all connected ADB devices
     pub fn list_devices(&self) -> AppResult<Vec<DeviceInfo>> {
-        let output = Command::new(&self.adb_path)
+        let output = silent_command(&self.adb_path)
             .args(["devices", "-l"])
             .output()
             .map_err(|e| AppError::Adb(format!("Failed to run adb: {}", e)))?;
@@ -134,7 +148,7 @@ impl AdbClient {
     /// Push a file to the device
     pub fn push_file(&self, serial: &str, local: &str, remote: &str) -> AppResult<()> {
         info!("Pushing {} to {}:{}", local, serial, remote);
-        let output = Command::new(&self.adb_path)
+        let output = silent_command(&self.adb_path)
             .args(["-s", serial, "push", local, remote])
             .output()
             .map_err(|e| AppError::Adb(format!("Failed to push file: {}", e)))?;
@@ -151,7 +165,7 @@ impl AdbClient {
         let mut args = vec!["-s", serial, "shell"];
         args.extend(command);
 
-        let output = Command::new(&self.adb_path)
+        let output = silent_command(&self.adb_path)
             .args(&args)
             .output()
             .map_err(|e| AppError::Adb(format!("Failed to run shell command: {}", e)))?;
@@ -166,7 +180,7 @@ impl AdbClient {
 
     /// Set up ADB port forwarding
     pub fn forward(&self, serial: &str, local: &str, remote: &str) -> AppResult<()> {
-        let output = Command::new(&self.adb_path)
+        let output = silent_command(&self.adb_path)
             .args(["-s", serial, "forward", local, remote])
             .output()
             .map_err(|e| AppError::Adb(format!("Failed to forward port: {}", e)))?;
@@ -180,7 +194,7 @@ impl AdbClient {
 
     /// Remove port forwarding
     pub fn forward_remove(&self, serial: &str, local: &str) -> AppResult<()> {
-        let _ = Command::new(&self.adb_path)
+        let _ = silent_command(&self.adb_path)
             .args(["-s", serial, "forward", "--remove", local])
             .output();
         Ok(())
@@ -191,7 +205,7 @@ impl AdbClient {
         let addr = format!("{}:{}", ip, port);
         info!("Pairing with {}", addr);
 
-        let output = Command::new(&self.adb_path)
+        let output = silent_command(&self.adb_path)
             .args(["pair", &addr, code])
             .output()
             .map_err(|e| AppError::Adb(format!("Failed to pair: {}", e)))?;
@@ -216,7 +230,7 @@ impl AdbClient {
         let addr = format!("{}:{}", ip, port);
         info!("Connecting to {}", addr);
 
-        let output = Command::new(&self.adb_path)
+        let output = silent_command(&self.adb_path)
             .args(["connect", &addr])
             .output()
             .map_err(|e| AppError::Adb(format!("Failed to connect: {}", e)))?;
@@ -235,7 +249,7 @@ impl AdbClient {
 
     /// Switch device to TCP/IP mode
     pub fn tcpip(&self, serial: &str, port: u16) -> AppResult<()> {
-        let output = Command::new(&self.adb_path)
+        let output = silent_command(&self.adb_path)
             .args(["-s", serial, "tcpip", &port.to_string()])
             .output()
             .map_err(|e| AppError::Adb(format!("Failed to switch to tcpip: {}", e)))?;

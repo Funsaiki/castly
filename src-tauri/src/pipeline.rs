@@ -10,6 +10,11 @@ use std::sync::Arc;
 use std::time::Duration;
 use tracing::{debug, error, info, warn};
 
+#[cfg(windows)]
+use std::os::windows::process::CommandExt;
+#[cfg(windows)]
+const CREATE_NO_WINDOW: u32 = 0x08000000;
+
 const SCRCPY_SERVER_PATH: &str = "/data/local/tmp/scrcpy-server.jar";
 const SCRCPY_VERSION: &str = "3.1";
 
@@ -56,13 +61,17 @@ impl MirrorPipeline {
         info!("Starting mirror pipeline for {} on port {}", serial, local_port);
 
         // 0. Kill any existing scrcpy server and remove old port forwards
-        let _ = std::process::Command::new(adb.adb_path())
-            .args(["-s", &serial, "shell", "pkill -f scrcpy"])
+        let mut cmd = std::process::Command::new(adb.adb_path());
+        #[cfg(windows)]
+        cmd.creation_flags(CREATE_NO_WINDOW);
+        let _ = cmd.args(["-s", &serial, "shell", "pkill -f scrcpy"])
             .stdout(std::process::Stdio::null())
             .stderr(std::process::Stdio::null())
             .output();
-        let _ = std::process::Command::new(adb.adb_path())
-            .args(["-s", &serial, "forward", "--remove-all"])
+        let mut cmd2 = std::process::Command::new(adb.adb_path());
+        #[cfg(windows)]
+        cmd2.creation_flags(CREATE_NO_WINDOW);
+        let _ = cmd2.args(["-s", &serial, "forward", "--remove-all"])
             .output();
         std::thread::sleep(Duration::from_millis(500));
         info!("Cleaned up old scrcpy processes");
@@ -354,7 +363,10 @@ impl MirrorPipeline {
 
         // Use piped stdout/stderr but drain them in background threads
         // to prevent the pipe buffer from filling up and blocking the server
-        let mut child = std::process::Command::new(adb.adb_path())
+        let mut launch_cmd = std::process::Command::new(adb.adb_path());
+        #[cfg(windows)]
+        launch_cmd.creation_flags(CREATE_NO_WINDOW);
+        let mut child = launch_cmd
             .args(["-s", serial, "shell", &cmd])
             .stdout(std::process::Stdio::piped())
             .stderr(std::process::Stdio::piped())
