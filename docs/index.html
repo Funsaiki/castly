@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Castly — Mirror your phone to your PC</title>
   <meta name="description" content="Free, open-source phone screen mirroring app. Mirror Android & iOS to your PC with full control, audio, and recording.">
-  <meta name="theme-color" content="#0f0a2e">
+  <meta name="theme-color" content="#0c0a09">
   <link rel="icon" type="image/png" href="icon.png">
 
   <!-- Open Graph -->
@@ -24,18 +24,23 @@
     }
 
     :root {
-      --bg-primary: #07050f;
-      --bg-card: #0f0b1e;
-      --bg-card-hover: #15102a;
-      --border: #1e1740;
-      --text-primary: #eae8f0;
-      --text-secondary: #9490a8;
-      --accent: #6c5ce7;
-      --accent-light: #a29bfe;
-      --accent-glow: rgba(108, 92, 231, 0.3);
-      --green: #00cec9;
-      --orange: #e17055;
-      --blue: #74b9ff;
+      --bg-deep: #0a0908;
+      --bg-primary: #0f0d0b;
+      --bg-card: #161311;
+      --bg-card-hover: #1e1a17;
+      --border: #2a2520;
+      --border-light: #3d3630;
+      --text-primary: #f5f0eb;
+      --text-secondary: #9c9590;
+      --text-muted: #635d57;
+      --accent: #e07850;
+      --accent-hover: #e8906e;
+      --accent-dim: #c4643f;
+      --accent-glow: rgba(224, 120, 80, 0.25);
+      --warm: #d4a853;
+      --warm-glow: rgba(212, 168, 83, 0.2);
+      --sage: #7cb06a;
+      --sky: #6ba3d6;
     }
 
     html {
@@ -44,34 +49,36 @@
 
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: var(--bg-primary);
+      background: var(--bg-deep);
       color: var(--text-primary);
       line-height: 1.6;
       overflow-x: hidden;
     }
 
-    /* Background glow effects */
+    /* Warm ambient glow */
     .bg-glow {
       position: fixed;
-      width: 600px;
-      height: 600px;
       border-radius: 50%;
-      filter: blur(150px);
-      opacity: 0.08;
+      filter: blur(160px);
       pointer-events: none;
       z-index: 0;
     }
 
     .bg-glow-1 {
-      top: -200px;
-      right: -100px;
-      background: var(--accent);
+      width: 700px;
+      height: 500px;
+      top: -250px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: radial-gradient(circle, rgba(224, 120, 80, 0.1), rgba(212, 168, 83, 0.05) 60%, transparent 80%);
     }
 
     .bg-glow-2 {
-      bottom: 20%;
-      left: -200px;
-      background: var(--green);
+      width: 500px;
+      height: 500px;
+      bottom: 10%;
+      right: -200px;
+      background: rgba(212, 168, 83, 0.04);
     }
 
     /* Container */
@@ -91,7 +98,7 @@
       right: 0;
       z-index: 100;
       padding: 16px 0;
-      background: rgba(7, 5, 15, 0.8);
+      background: rgba(10, 9, 8, 0.85);
       backdrop-filter: blur(20px);
       border-bottom: 1px solid transparent;
       transition: border-color 0.3s;
@@ -158,34 +165,61 @@
       align-items: center;
       gap: 8px;
       padding: 6px 16px;
-      background: rgba(108, 92, 231, 0.1);
-      border: 1px solid rgba(108, 92, 231, 0.25);
+      background: rgba(224, 120, 80, 0.08);
+      border: 1px solid rgba(224, 120, 80, 0.2);
       border-radius: 100px;
       font-size: 0.8rem;
-      color: var(--accent-light);
+      color: var(--accent-hover);
       font-weight: 500;
-      margin-bottom: 28px;
+      margin-bottom: 32px;
     }
 
-    .hero-badge span {
+    .hero-badge .dot {
       width: 6px;
       height: 6px;
-      background: var(--green);
+      background: var(--sage);
       border-radius: 50%;
       animation: pulse 2s infinite;
     }
 
     @keyframes pulse {
       0%, 100% { opacity: 1; }
-      50% { opacity: 0.4; }
+      50% { opacity: 0.3; }
+    }
+
+    /* Animated signal icon */
+    .hero-visual {
+      position: relative;
+      display: inline-block;
+      margin-bottom: 32px;
     }
 
     .hero-icon {
       width: 88px;
       height: 88px;
       border-radius: 22px;
-      margin-bottom: 28px;
-      box-shadow: 0 0 60px var(--accent-glow);
+      position: relative;
+      z-index: 2;
+    }
+
+    .signal-ring {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      border: 1.5px solid var(--accent);
+      opacity: 0;
+      animation: signal 3s ease-out infinite;
+    }
+
+    .signal-ring:nth-child(2) { width: 130px; height: 130px; animation-delay: 0s; }
+    .signal-ring:nth-child(3) { width: 180px; height: 180px; animation-delay: 0.6s; }
+    .signal-ring:nth-child(4) { width: 230px; height: 230px; animation-delay: 1.2s; }
+
+    @keyframes signal {
+      0% { opacity: 0.5; transform: translate(-50%, -50%) scale(0.85); }
+      100% { opacity: 0; transform: translate(-50%, -50%) scale(1); }
     }
 
     .hero h1 {
@@ -197,7 +231,7 @@
     }
 
     .hero h1 .gradient {
-      background: linear-gradient(135deg, var(--accent-light), var(--green));
+      background: linear-gradient(135deg, var(--accent) 0%, var(--warm) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -241,7 +275,7 @@
     }
 
     .btn-primary:hover {
-      background: #7c6ef0;
+      background: var(--accent-hover);
       transform: translateY(-2px);
       box-shadow: 0 8px 32px var(--accent-glow);
     }
@@ -254,7 +288,7 @@
 
     .btn-secondary:hover {
       background: var(--bg-card-hover);
-      border-color: #2a2450;
+      border-color: var(--border-light);
       transform: translateY(-2px);
     }
 
@@ -270,13 +304,21 @@
       justify-content: center;
       gap: 24px;
       font-size: 0.8rem;
-      color: var(--text-secondary);
+      color: var(--text-muted);
     }
 
     .hero-meta span {
       display: flex;
       align-items: center;
       gap: 5px;
+    }
+
+    /* Divider */
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border) 30%, var(--border) 70%, transparent);
+      max-width: 800px;
+      margin: 0 auto;
     }
 
     /* Section titles */
@@ -301,13 +343,13 @@
 
     /* Features */
     .features {
-      padding: 60px 0 80px;
+      padding: 80px 0;
     }
 
     .features-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
+      gap: 16px;
     }
 
     .feature-card {
@@ -320,25 +362,24 @@
 
     .feature-card:hover {
       background: var(--bg-card-hover);
-      border-color: #2a2450;
-      transform: translateY(-4px);
+      border-color: var(--border-light);
+      transform: translateY(-3px);
     }
 
     .feature-icon {
-      width: 44px;
-      height: 44px;
-      border-radius: 12px;
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
       margin-bottom: 16px;
-      font-size: 1.3rem;
     }
 
-    .feature-icon.purple { background: rgba(108, 92, 231, 0.15); color: var(--accent-light); }
-    .feature-icon.green  { background: rgba(0, 206, 201, 0.15); color: var(--green); }
-    .feature-icon.orange { background: rgba(225, 112, 85, 0.15); color: var(--orange); }
-    .feature-icon.blue   { background: rgba(116, 185, 255, 0.15); color: var(--blue); }
+    .feature-icon.fi-android { background: rgba(124, 176, 106, 0.12); color: var(--sage); }
+    .feature-icon.fi-ios     { background: rgba(107, 163, 214, 0.12); color: var(--sky); }
+    .feature-icon.fi-accent  { background: rgba(224, 120, 80, 0.1); color: var(--accent); }
+    .feature-icon.fi-warm    { background: rgba(212, 168, 83, 0.1); color: var(--warm); }
 
     .feature-card h3 {
       font-size: 1rem;
@@ -363,39 +404,54 @@
       margin-bottom: 12px;
     }
 
-    .tag-android { background: rgba(0, 206, 201, 0.12); color: var(--green); }
-    .tag-ios     { background: rgba(116, 185, 255, 0.12); color: var(--blue); }
-    .tag-general { background: rgba(108, 92, 231, 0.12); color: var(--accent-light); }
+    .tag-android { background: rgba(124, 176, 106, 0.1); color: var(--sage); }
+    .tag-ios     { background: rgba(107, 163, 214, 0.1); color: var(--sky); }
+    .tag-general { background: rgba(212, 168, 83, 0.1); color: var(--warm); }
 
     /* How it works */
     .how-it-works {
-      padding: 60px 0 80px;
+      padding: 80px 0;
     }
 
     .steps {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
+      gap: 20px;
+      position: relative;
+    }
+
+    /* Connecting line between steps */
+    .steps::before {
+      content: '';
+      position: absolute;
+      top: 36px;
+      left: calc(16.66% + 24px);
+      right: calc(16.66% + 24px);
+      height: 1px;
+      background: linear-gradient(90deg, var(--border), var(--accent) 50%, var(--border));
+      opacity: 0.5;
     }
 
     .step {
       text-align: center;
-      padding: 32px 24px;
+      padding: 24px;
     }
 
     .step-number {
       width: 48px;
       height: 48px;
       border-radius: 50%;
-      background: rgba(108, 92, 231, 0.12);
-      border: 1px solid rgba(108, 92, 231, 0.3);
+      background: var(--bg-card);
+      border: 1.5px solid var(--accent);
       display: flex;
       align-items: center;
       justify-content: center;
       margin: 0 auto 18px;
       font-weight: 700;
-      color: var(--accent-light);
+      color: var(--accent);
       font-size: 1.1rem;
+      position: relative;
+      z-index: 1;
     }
 
     .step h3 {
@@ -412,14 +468,14 @@
 
     /* Tech */
     .tech {
-      padding: 60px 0 80px;
+      padding: 80px 0;
     }
 
     .tech-pills {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 12px;
+      gap: 10px;
     }
 
     .tech-pill {
@@ -437,7 +493,7 @@
     }
 
     .tech-pill:hover {
-      border-color: #2a2450;
+      border-color: var(--border-light);
       color: var(--text-primary);
     }
 
@@ -447,15 +503,15 @@
       border-radius: 50%;
     }
 
-    .dot-rust   { background: #e17055; }
-    .dot-react  { background: #74b9ff; }
-    .dot-tauri  { background: #ffc048; }
-    .dot-ts     { background: #6c5ce7; }
-    .dot-tw     { background: #00cec9; }
+    .dot-rust   { background: #e07850; }
+    .dot-react  { background: #6ba3d6; }
+    .dot-tauri  { background: #d4a853; }
+    .dot-ts     { background: #5b8ec9; }
+    .dot-tw     { background: #7cb06a; }
 
     /* Requirements */
     .requirements {
-      padding: 60px 0 80px;
+      padding: 80px 0;
     }
 
     .req-card {
@@ -470,7 +526,7 @@
     .req-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 20px;
+      gap: 24px;
     }
 
     .req-item h4 {
@@ -495,10 +551,24 @@
     }
 
     .cta-box {
-      background: linear-gradient(135deg, rgba(108, 92, 231, 0.08), rgba(0, 206, 201, 0.05));
+      background: linear-gradient(135deg, rgba(224, 120, 80, 0.06), rgba(212, 168, 83, 0.04));
       border: 1px solid var(--border);
       border-radius: 24px;
       padding: 60px 40px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-box::before {
+      content: '';
+      position: absolute;
+      top: -80px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 400px;
+      height: 200px;
+      background: radial-gradient(circle, rgba(224, 120, 80, 0.08), transparent 70%);
+      pointer-events: none;
     }
 
     .cta-box h2 {
@@ -506,12 +576,14 @@
       font-weight: 700;
       margin-bottom: 14px;
       letter-spacing: -0.02em;
+      position: relative;
     }
 
     .cta-box p {
       color: var(--text-secondary);
       margin-bottom: 32px;
       font-size: 1.05rem;
+      position: relative;
     }
 
     /* Footer */
@@ -523,7 +595,7 @@
 
     footer p {
       font-size: 0.8rem;
-      color: var(--text-secondary);
+      color: var(--text-muted);
     }
 
     footer a {
@@ -542,6 +614,8 @@
       .steps {
         grid-template-columns: 1fr;
       }
+
+      .steps::before { display: none; }
 
       .req-grid {
         grid-template-columns: 1fr;
@@ -563,6 +637,8 @@
         width: 100%;
         justify-content: center;
       }
+
+      .signal-ring:nth-child(4) { display: none; }
     }
 
     @media (max-width: 480px) {
@@ -605,10 +681,15 @@
   <section class="hero">
     <div class="container">
       <div class="hero-badge">
-        <span></span>
+        <span class="dot"></span>
         v0.1.1 — Now available
       </div>
-      <img src="icon.png" alt="Castly" class="hero-icon">
+      <div class="hero-visual">
+        <img src="icon.png" alt="Castly" class="hero-icon">
+        <div class="signal-ring"></div>
+        <div class="signal-ring"></div>
+        <div class="signal-ring"></div>
+      </div>
       <h1>Mirror your phone<br><span class="gradient">to your PC</span></h1>
       <p>Free, open-source screen mirroring for Android &amp; iOS. Full control, audio forwarding, recording — all in one app.</p>
       <div class="hero-actions">
@@ -638,6 +719,8 @@
     </div>
   </section>
 
+  <div class="divider"></div>
+
   <!-- Features -->
   <section class="features" id="features">
     <div class="container">
@@ -649,7 +732,7 @@
 
         <div class="feature-card">
           <span class="feature-tag tag-android">Android</span>
-          <div class="feature-icon green">
+          <div class="feature-icon fi-android">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
           </div>
           <h3>USB &amp; Wi-Fi mirroring</h3>
@@ -658,7 +741,7 @@
 
         <div class="feature-card">
           <span class="feature-tag tag-android">Android</span>
-          <div class="feature-icon green">
+          <div class="feature-icon fi-android">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
           </div>
           <h3>Full device control</h3>
@@ -667,7 +750,7 @@
 
         <div class="feature-card">
           <span class="feature-tag tag-android">Android</span>
-          <div class="feature-icon green">
+          <div class="feature-icon fi-android">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
           </div>
           <h3>Audio forwarding</h3>
@@ -676,7 +759,7 @@
 
         <div class="feature-card">
           <span class="feature-tag tag-ios">iOS</span>
-          <div class="feature-icon blue">
+          <div class="feature-icon fi-ios">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.55a11 11 0 0114.08 0"/><path d="M1.42 9a16 16 0 0121.16 0"/><path d="M8.53 16.11a6 6 0 016.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
           </div>
           <h3>AirPlay receiver</h3>
@@ -685,7 +768,7 @@
 
         <div class="feature-card">
           <span class="feature-tag tag-general">General</span>
-          <div class="feature-icon purple">
+          <div class="feature-icon fi-accent">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
           </div>
           <h3>Recording &amp; screenshots</h3>
@@ -694,7 +777,7 @@
 
         <div class="feature-card">
           <span class="feature-tag tag-general">General</span>
-          <div class="feature-icon purple">
+          <div class="feature-icon fi-warm">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
           </div>
           <h3>Quality presets</h3>
@@ -704,6 +787,8 @@
       </div>
     </div>
   </section>
+
+  <div class="divider"></div>
 
   <!-- How it works -->
   <section class="how-it-works" id="how-it-works">
@@ -732,6 +817,8 @@
     </div>
   </section>
 
+  <div class="divider"></div>
+
   <!-- Tech -->
   <section class="tech" id="tech">
     <div class="container">
@@ -752,6 +839,8 @@
     </div>
   </section>
 
+  <div class="divider"></div>
+
   <!-- Requirements -->
   <section class="requirements" id="requirements">
     <div class="container">
@@ -762,28 +851,28 @@
         <div class="req-grid">
           <div class="req-item">
             <h4>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent-light)" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/></svg>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/></svg>
               Platform
             </h4>
             <p>Windows 10 or 11 (macOS &amp; Linux planned)</p>
           </div>
           <div class="req-item">
             <h4>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--sage)" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
               Android
             </h4>
             <p>USB debugging enabled, or Wireless Debugging (Android 11+)</p>
           </div>
           <div class="req-item">
             <h4>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--sky)" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
               iOS
             </h4>
             <p>iPhone/iPad on the same Wi-Fi network as your PC</p>
           </div>
           <div class="req-item">
             <h4>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--warm)" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
               Included
             </h4>
             <p>ADB &amp; scrcpy server are bundled — nothing else to install</p>
@@ -799,7 +888,7 @@
       <div class="cta-box">
         <h2>Ready to mirror?</h2>
         <p>Download Castly for free and start mirroring in minutes.</p>
-        <a href="https://github.com/Funsaiki/castly/releases/latest" class="btn btn-primary">
+        <a href="https://github.com/Funsaiki/castly/releases/latest" class="btn btn-primary" style="position:relative">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
           Download for Windows
         </a>
@@ -821,7 +910,6 @@
   </footer>
 
   <script>
-    // Navbar scroll effect
     const nav = document.getElementById('nav');
     window.addEventListener('scroll', () => {
       nav.classList.toggle('scrolled', window.scrollY > 20);
