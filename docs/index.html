@@ -313,6 +313,103 @@
       gap: 5px;
     }
 
+    /* Download split button */
+    .download-split {
+      position: relative;
+      display: inline-flex;
+      align-items: stretch;
+    }
+
+    .download-split > .btn-primary:first-child {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+      padding-right: 22px;
+    }
+
+    .split-toggle {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+      padding: 14px 12px;
+      border-left: 1px solid rgba(255,255,255,0.15);
+    }
+
+    .split-toggle:hover {
+      background: var(--accent-dim);
+    }
+
+    .download-dropdown {
+      position: absolute;
+      top: calc(100% + 8px);
+      left: 0;
+      right: 0;
+      min-width: 320px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: 14px;
+      padding: 6px;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-6px);
+      transition: all 0.2s;
+      z-index: 50;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+    }
+
+    .download-dropdown.open {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .dropdown-option {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      text-decoration: none;
+      color: var(--text-primary);
+      transition: background 0.15s;
+    }
+
+    .dropdown-option:hover {
+      background: var(--bg-card-hover);
+    }
+
+    .dropdown-option-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: rgba(224, 120, 80, 0.1);
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .dropdown-option-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .dropdown-rec {
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--sage);
+      background: rgba(124, 176, 106, 0.1);
+      padding: 1px 7px;
+      border-radius: 4px;
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+
+    .dropdown-option-desc {
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      margin-top: 1px;
+    }
+
     /* Divider */
     .divider {
       height: 1px;
@@ -634,8 +731,19 @@
       }
 
       .btn {
-        width: 100%;
         justify-content: center;
+      }
+
+      .download-split {
+        width: 100%;
+      }
+
+      .download-split > .btn-primary:first-child {
+        flex: 1;
+      }
+
+      .download-dropdown {
+        min-width: 0;
       }
 
       .signal-ring:nth-child(4) { display: none; }
@@ -680,23 +788,48 @@
   <!-- Hero -->
   <section class="hero">
     <div class="container">
-      <div class="hero-badge">
-        <span class="dot"></span>
-        v0.1.1 — Now available
-      </div>
       <div class="hero-visual">
         <img src="icon.png" alt="Castly" class="hero-icon">
         <div class="signal-ring"></div>
         <div class="signal-ring"></div>
         <div class="signal-ring"></div>
       </div>
+      <div class="hero-badge">
+        <span class="dot"></span>
+        v0.1.1 — Now available
+      </div>
       <h1>Mirror your phone<br><span class="gradient">to your PC</span></h1>
       <p>Free, open-source screen mirroring for Android &amp; iOS. Full control, audio forwarding, recording — all in one app.</p>
       <div class="hero-actions">
-        <a href="https://github.com/Funsaiki/castly/releases/latest" class="btn btn-primary">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          Download for Windows
-        </a>
+        <div class="download-split">
+          <a href="#" onclick="downloadAsset('exe', event)" class="btn btn-primary">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download for Windows
+          </a>
+          <button class="btn btn-primary split-toggle" onclick="toggleDropdown(this)" aria-label="More download options">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="download-dropdown">
+            <a href="#" onclick="downloadAsset('exe', event)" class="dropdown-option">
+              <div class="dropdown-option-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              </div>
+              <div>
+                <div class="dropdown-option-title">Setup wizard <span class="dropdown-rec">Recommended</span></div>
+                <div class="dropdown-option-desc">Guided installation — just follow the steps</div>
+              </div>
+            </a>
+            <a href="#" onclick="downloadAsset('msi', event)" class="dropdown-option">
+              <div class="dropdown-option-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/></svg>
+              </div>
+              <div>
+                <div class="dropdown-option-title">Windows Installer</div>
+                <div class="dropdown-option-desc">Standard .msi package — for IT or silent install</div>
+              </div>
+            </a>
+          </div>
+        </div>
         <a href="https://github.com/Funsaiki/castly" target="_blank" rel="noopener" class="btn btn-secondary">
           <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
           View Source
@@ -888,10 +1021,35 @@
       <div class="cta-box">
         <h2>Ready to mirror?</h2>
         <p>Download Castly for free and start mirroring in minutes.</p>
-        <a href="https://github.com/Funsaiki/castly/releases/latest" class="btn btn-primary" style="position:relative">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          Download for Windows
-        </a>
+        <div class="download-split" style="justify-content:center">
+          <a href="#" onclick="downloadAsset('exe', event)" class="btn btn-primary">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download for Windows
+          </a>
+          <button class="btn btn-primary split-toggle" onclick="toggleDropdown(this)" aria-label="More download options">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="download-dropdown">
+            <a href="#" onclick="downloadAsset('exe', event)" class="dropdown-option">
+              <div class="dropdown-option-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              </div>
+              <div>
+                <div class="dropdown-option-title">Setup wizard <span class="dropdown-rec">Recommended</span></div>
+                <div class="dropdown-option-desc">Guided installation — just follow the steps</div>
+              </div>
+            </a>
+            <a href="#" onclick="downloadAsset('msi', event)" class="dropdown-option">
+              <div class="dropdown-option-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/></svg>
+              </div>
+              <div>
+                <div class="dropdown-option-title">Windows Installer</div>
+                <div class="dropdown-option-desc">Standard .msi package — for IT or silent install</div>
+              </div>
+            </a>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -913,6 +1071,52 @@
     const nav = document.getElementById('nav');
     window.addEventListener('scroll', () => {
       nav.classList.toggle('scrolled', window.scrollY > 20);
+    });
+
+    // Fetch release assets once, cache them
+    let releaseCache = null;
+    async function getReleaseAssets() {
+      if (releaseCache) return releaseCache;
+      const res = await fetch('https://api.github.com/repos/Funsaiki/castly/releases/latest');
+      const data = await res.json();
+      releaseCache = data.assets || [];
+      return releaseCache;
+    }
+
+    // Pre-fetch on page load so downloads are instant
+    getReleaseAssets().catch(() => {});
+
+    async function downloadAsset(type, e) {
+      e.preventDefault();
+      // Close any open dropdown
+      document.querySelectorAll('.download-dropdown.open').forEach(d => d.classList.remove('open'));
+      try {
+        const assets = await getReleaseAssets();
+        const ext = type === 'msi' ? '.msi' : '-setup.exe';
+        const asset = assets.find(a => a.name.endsWith(ext));
+        if (asset) {
+          window.location.href = asset.browser_download_url;
+        } else {
+          window.location.href = 'https://github.com/Funsaiki/castly/releases/latest';
+        }
+      } catch {
+        window.location.href = 'https://github.com/Funsaiki/castly/releases/latest';
+      }
+    }
+
+    function toggleDropdown(btn) {
+      const dropdown = btn.parentElement.querySelector('.download-dropdown');
+      const isOpen = dropdown.classList.contains('open');
+      // Close all dropdowns first
+      document.querySelectorAll('.download-dropdown.open').forEach(d => d.classList.remove('open'));
+      if (!isOpen) dropdown.classList.add('open');
+    }
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.download-split')) {
+        document.querySelectorAll('.download-dropdown.open').forEach(d => d.classList.remove('open'));
+      }
     });
   </script>
 
