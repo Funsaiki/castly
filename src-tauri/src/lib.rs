@@ -78,6 +78,20 @@ pub fn run() {
 
             Ok(())
         })
-        .run(tauri::generate_context!())
-        .expect("error while running Phone Mirror");
+        .build(tauri::generate_context!())
+        .expect("error while building Castly")
+        .run(|_app, event| {
+            if let tauri::RunEvent::Exit = event {
+                // Kill adb server on exit so it doesn't lock files for the installer
+                let adb = adb::client::AdbClient::new();
+                let mut cmd = std::process::Command::new(adb.adb_path());
+                #[cfg(windows)]
+                {
+                    use std::os::windows::process::CommandExt;
+                    cmd.creation_flags(0x08000000);
+                }
+                let _ = cmd.arg("kill-server").output();
+                tracing::info!("ADB server killed on exit");
+            }
+        });
 }

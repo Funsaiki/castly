@@ -26,7 +26,7 @@ impl AirPlayAdvertiser {
 
         // Generate a stable-ish device ID (MAC-like format)
         let device_id = Self::generate_device_id();
-        let instance_name = "Phone Mirror";
+        let instance_name = "Castly";
 
         // TXT records that make iPhones recognize us as an AirPlay receiver
         let properties = vec![
@@ -40,10 +40,18 @@ impl AirPlayAdvertiser {
             ("vv".to_string(), "2".to_string()),
         ];
 
+        // Build hostname with .local. suffix as required by mDNS
+        let raw_hostname = hostname::get()
+            .map(|h| h.to_string_lossy().to_string())
+            .unwrap_or_else(|_| "castly".to_string());
+        // Strip any existing domain and ensure .local. suffix
+        let short_name = raw_hostname.split('.').next().unwrap_or("castly");
+        let mdns_hostname = format!("{}.local.", short_name);
+
         let service = ServiceInfo::new(
             AIRPLAY_SERVICE_TYPE,
             instance_name,
-            &format!("{}.", hostname::get()?.to_string_lossy()),
+            &mdns_hostname,
             "",  // Let mdns-sd pick the IP
             AIRPLAY_PORT,
             properties.as_slice(),
