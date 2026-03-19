@@ -680,20 +680,20 @@
   <!-- Hero -->
   <section class="hero">
     <div class="container">
-      <div class="hero-badge">
-        <span class="dot"></span>
-        v0.1.1 — Now available
-      </div>
       <div class="hero-visual">
         <img src="icon.png" alt="Castly" class="hero-icon">
         <div class="signal-ring"></div>
         <div class="signal-ring"></div>
         <div class="signal-ring"></div>
       </div>
+      <div class="hero-badge">
+        <span class="dot"></span>
+        v0.1.1 — Now available
+      </div>
       <h1>Mirror your phone<br><span class="gradient">to your PC</span></h1>
       <p>Free, open-source screen mirroring for Android &amp; iOS. Full control, audio forwarding, recording — all in one app.</p>
       <div class="hero-actions">
-        <a href="https://github.com/Funsaiki/castly/releases/latest" class="btn btn-primary">
+        <a href="#" onclick="downloadLatest(event)" class="btn btn-primary">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
           Download for Windows
         </a>
@@ -888,7 +888,7 @@
       <div class="cta-box">
         <h2>Ready to mirror?</h2>
         <p>Download Castly for free and start mirroring in minutes.</p>
-        <a href="https://github.com/Funsaiki/castly/releases/latest" class="btn btn-primary" style="position:relative">
+        <a href="#" onclick="downloadLatest(event)" class="btn btn-primary" style="position:relative">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
           Download for Windows
         </a>
@@ -914,6 +914,26 @@
     window.addEventListener('scroll', () => {
       nav.classList.toggle('scrolled', window.scrollY > 20);
     });
+
+    // Direct download: fetch latest release .msi from GitHub API
+    let cachedUrl = null;
+    async function downloadLatest(e) {
+      e.preventDefault();
+      if (cachedUrl) { window.location.href = cachedUrl; return; }
+      try {
+        const res = await fetch('https://api.github.com/repos/Funsaiki/castly/releases/latest');
+        const data = await res.json();
+        const msi = data.assets.find(a => a.name.endsWith('.msi'));
+        if (msi) {
+          cachedUrl = msi.browser_download_url;
+          window.location.href = cachedUrl;
+        } else {
+          window.location.href = data.html_url;
+        }
+      } catch {
+        window.location.href = 'https://github.com/Funsaiki/castly/releases/latest';
+      }
+    }
   </script>
 
 </body>
